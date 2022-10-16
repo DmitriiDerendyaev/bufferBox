@@ -160,7 +160,7 @@ public:
         else
         {
             Node<universal_variable>* currentNode = this->head_list;
-            for (int i = 1; i < _size-1; i++)
+            for (int i = 1; i < _size - 1; i++)
             {
                 currentNode = currentNode->_next_node_address;
             }
@@ -188,6 +188,19 @@ public:
             Node<universal_variable>* new_node = new Node<universal_variable>(adding_element);
             new_node->_next_node_address = search_name(value.name)->_next_node_address;
             search_name(value.name)->_next_node_address = new_node;
+        }
+        else if (field == 2) search_account(value.number_account)->_data;
+        else if (field == 3) search_value_account(value.value_account)->_data;
+    }
+
+    void delete_after_find(int field, DataStruct value) {
+        if (field < 1 or field > 3) throw out_of_range("Out of array!");
+        else if (field == 1) {
+            Node<universal_variable>* previous_node = search_name(value.name);
+            Node<universal_variable>* toDelete = previous_node->_next_node_address;
+            previous_node->_next_node_address = toDelete->_next_node_address;
+            delete toDelete;
+            _size--;
         }
         else if (field == 2) search_account(value.number_account)->_data;
         else if (field == 3) search_value_account(value.value_account)->_data;
@@ -250,142 +263,142 @@ int main() {
         cin >> user_choice;
         switch (user_choice)
         {
-            case PUSH_BACK:
+        case PUSH_BACK:
+        {
+            try
             {
-                try
-                {
-                    DataStruct MyStruct;
-                    MyStruct = create_struct();
-                    SingleList.pushBack(MyStruct);
-                }
-                catch (const out_of_range& error)
-                {
-                    cerr << "Unknown error: " << error.what() << endl;
-                }
-                break;
+                DataStruct MyStruct;
+                MyStruct = create_struct();
+                SingleList.pushBack(MyStruct);
             }
-            case PUSH_START:
+            catch (const out_of_range& error)
             {
-                try
-                {
-                    DataStruct MyStruct;
-                    MyStruct = create_struct();
-                    SingleList.pushStart(MyStruct);
-                }
-                catch (const out_of_range& error)
-                {
-                    cerr << "Unknown error: " << error.what() << endl;
-                }
-                break;
+                cerr << "Unknown error: " << error.what() << endl;
             }
-            case DELETE_BACK:
+            break;
+        }
+        case PUSH_START:
+        {
+            try
             {
-                try
-                {
-                    SingleList.deleteBack();
-                }
-                catch (const out_of_range& error)
-                {
-                    cerr << "List is empty!: " << error.what() << endl;
-                }
-                break;
+                DataStruct MyStruct;
+                MyStruct = create_struct();
+                SingleList.pushStart(MyStruct);
             }
-            case DELETE_START:
+            catch (const out_of_range& error)
             {
-                try
-                {
-                    SingleList.deleteStart();
-                }
-                catch (const logic_error& error)
-                {
-                    cerr << "List is empty!: " << error.what() << endl;
-                }
-                break;
+                cerr << "Unknown error: " << error.what() << endl;
             }
+            break;
+        }
+        case DELETE_BACK:
+        {
+            try
+            {
+                SingleList.deleteBack();
+            }
+            catch (const out_of_range& error)
+            {
+                cerr << "List is empty!: " << error.what() << endl;
+            }
+            break;
+        }
+        case DELETE_START:
+        {
+            try
+            {
+                SingleList.deleteStart();
+            }
+            catch (const logic_error& error)
+            {
+                cerr << "List is empty!: " << error.what() << endl;
+            }
+            break;
+        }
 
-            case FIND_BY_FIELD:
+        case FIND_BY_FIELD:
+        {
+            try
             {
-                try
-                {
-                    cout << "Enter number field for search: ";
-                    int num_field;
-                    cin >> num_field;
+                cout << "Enter number field for search: ";
+                int num_field;
+                cin >> num_field;
 
-                    DataStruct tmp;
-                    if (num_field == 1)
-                    {
-                        cout << "Enter full name for search: ";
-                        cin >> tmp.name;
-                    }
-                    if (num_field == 2)
-                    {
-                        cout << "Enter number account for search: ";
-                        cin >> tmp.number_account;
-                    }
-                    if (num_field == 3)
-                    {
-                        cout << "Enter value account for search: ";
-                        cin >> tmp.value_account;
-                    }
-                    cout << endl << endl << "Found element: " << endl;
-                    print_struct(SingleList.search_by_field(num_field, tmp));
-                }
-                catch (const out_of_range& error)
+                DataStruct tmp;
+                if (num_field == 1)
                 {
-                    cerr << "List is empty!: " << error.what() << endl;
+                    cout << "Enter full name for search: ";
+                    cin >> tmp.name;
                 }
-                break;
+                if (num_field == 2)
+                {
+                    cout << "Enter number account for search: ";
+                    cin >> tmp.number_account;
+                }
+                if (num_field == 3)
+                {
+                    cout << "Enter value account for search: ";
+                    cin >> tmp.value_account;
+                }
+                cout << endl << endl << "Found element: " << endl;
+                print_struct(SingleList.search_by_field(num_field, tmp));
             }
-            case ADD_AFTER_FOUND:
+            catch (const out_of_range& error)
             {
-                try
-                {
-                    cout << "Enter number field for search: ";
-                    int num_field;
-                    cin >> num_field;
-
-                    DataStruct tmp;
-                    DataStruct for_past;
-                    if (num_field == 1)
-                    {
-                        cout << "Enter full name for search: ";
-                        cin >> tmp.name;
-                    }
-                    if (num_field == 2)
-                    {
-                        cout << "Enter number account for search: ";
-                        cin >> tmp.number_account;
-                    }
-                    if (num_field == 3)
-                    {
-                        cout << "Enter value account for search: ";
-                        cin >> tmp.value_account;
-                    }
-                    for_past = create_struct();
-                    cout << endl << endl << "Found element: " << endl;
-                    SingleList.add_after_finded(num_field, tmp, for_past);
-                }
-                catch (const logic_error& error)
-                {
-                    cerr << "Logical Error: " << error.what() << endl;
-                }
-                break;
+                cerr << "List is empty!: " << error.what() << endl;
             }
-            case DELETE_FOUND:
+            break;
+        }
+        case ADD_AFTER_FOUND:
+        {
+            try
             {
-                try
-                {
+                cout << "Enter number field for search: ";
+                int num_field;
+                cin >> num_field;
 
-
-                }
-                catch (const logic_error& error)
+                DataStruct tmp;
+                DataStruct for_past;
+                if (num_field == 1)
                 {
-                    cerr << "Logical Error: " << error.what() << endl;
+                    cout << "Enter full name for search: ";
+                    cin >> tmp.name;
                 }
-                break;
+                if (num_field == 2)
+                {
+                    cout << "Enter number account for search: ";
+                    cin >> tmp.number_account;
+                }
+                if (num_field == 3)
+                {
+                    cout << "Enter value account for search: ";
+                    cin >> tmp.value_account;
+                }
+                for_past = create_struct();
+                cout << endl << endl << "Found element: " << endl;
+                SingleList.add_after_finded(num_field, tmp, for_past);
             }
-            default:
-                break;
+            catch (const logic_error& error)
+            {
+                cerr << "Logical Error: " << error.what() << endl;
+            }
+            break;
+        }
+        case DELETE_FOUND:
+        {
+            try
+            {
+
+
+            }
+            catch (const logic_error& error)
+            {
+                cerr << "Logical Error: " << error.what() << endl;
+            }
+            break;
+        }
+        default:
+            break;
         }
     }
     return 0;
